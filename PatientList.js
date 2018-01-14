@@ -217,14 +217,16 @@ export class PatientList extends Component {
                     />
                     <View style={styles.footer}>
                         <TouchableOpacity style={styles.reserveButton} onPress={() => {
-                            this.getRef().child("users").child(this.currentuser.email).once('value').then(snapshot => {
+                            this.getRef().child("users").child(this.currentuser).once('value').then(snapshot => {
                                 var username = (snapshot.val());
                                 console.log("-----------" + username);
-                                if (email === "anca@anca.com") {
-                                    navigate('PreparePatient', {refresh: this._onRefresh})
+                                if (username.email === "admin@admin.com") {
+                                console.log("tttt",this.state.newpatients);
+                                    navigate('Chart', {patients: this.state.newpatients, refresh: this._onRefresh})
+//                                      navigate('Chart', {refresh: this._onRefresh});
                                 }
 
-                                if (email != "admin@admin.com") {
+                                if (username.email != "admin@admin.com") {
                                     console.log(username);
                                     Alert.alert('', 'Unavailable in admin mode!',
                                         [
@@ -240,7 +242,7 @@ export class PatientList extends Component {
 
                         }
                         }>
-                            <Text style={styles.reserveButtonText}> Prepare a patient </Text>
+                            <Text style={styles.reserveButtonText}> Chart </Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.addButton} onPress={() => {
                             this.getRef().child("users").child(this.currentuser).once('value').then(snapshot => {

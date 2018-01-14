@@ -17,9 +17,14 @@ export class Chart extends React.Component {
         super();
 
         this.state = {
-            capitalLetters: 0,
-            lowercaseLetters: 0,
-            spaces: 0,
+            day0: 0,
+            day1: 0,
+            day2: 0,
+            day3: 0,
+            day4: 0,
+            day5: 0,
+            day6: 0,
+            date : new Date,
             legend: {
                 enabled: true,
                 textSize: 8,
@@ -30,28 +35,48 @@ export class Chart extends React.Component {
             description: {
                 text: 'Pie chart description',
                 textSize: 15,
-                textColor: processColor('darkgray'),
+                textColor: processColor('darkgray')
 
             }
         };
     }
 
 
-    analise(name) {
-        for (i = 0; i < name.length; i++) {
-            if (name[i] === name[i].toUpperCase())
-                this.state.capitalLetters++;
-            if (name[i] === name[i].toLowerCase())
-                this.state.lowercaseLetters++;
-            if (name[i] === " ")
-                this.state.spaces++;
+    analise(patients) {
+        var array = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        var date = new Date();
+        console.log("ppp", date);
+        for (i = 0; i < patients.length; i++) {
+            console.log(patients[i].patient.next_consult);
+            if (patients[i].patient.next_consult.indexOf(""+(array[date.getDay()]))!=-1){
+                this.state.day0 = this.state.day0+1;
+            }
+            if (patients[i].patient.next_consult.indexOf(""+(array[date.getDay()+1]))!=-1){
+                this.state.day1 = this.state.day1+1;
+            }
+            if (patients[i].patient.next_consult.indexOf(""+(array[date.getDay()+2]))!=-1){
+                this.state.day2 = this.state.day2+1;
+            }
+            if (patients[i].patient.next_consult.indexOf(""+(array[date.getDay()+3]))!=-1){
+                this.state.day3 = this.state.day3+1;
+            }
+            if (patients[i].patient.next_consult.indexOf(""+(array[date.getDay()+4]))!=-1){
+                this.state.day4 = this.state.day4+1;
+            }
+            if (patients[i].patient.next_consult.indexOf(""+(array[date.getDay()+6]))!=-1){
+                this.state.day6 = this.state.day6+1;
+            }
+            if (patients[i].patient.next_consult.indexOf(""+(array[date.getDay()+5]))!=-1){
+                this.state.day5 = this.state.day5+1;
+            }
+
         }
     }
 
     render() {
         const {params} = this.props.navigation.state;
-        var name = params ? params.name : "<undefined>";
-        this.analise(name);
+        var patients = params ? params.patients : "<undefined>";
+        this.analise(patients);
         return (
             <SafeAreaView style={{flex: 1}}>
                 <View style={styles.container}>
@@ -62,12 +87,16 @@ export class Chart extends React.Component {
                         data={{
                             dataSets: [{
                             values: [
-                                {value: this.state.capitalLetters, label: 'UpperCaseLetters'},
-                                {value: this.state.lowercaseLetters, label: 'LowerCaseLetters'},
-                                {value: this.state.spaces, label: 'spaces'}],
+                                {value: this.state.day0, label: "Sun"},
+                                {value: this.state.day1, label: "Mon"},
+                                {value: this.state.day2, label: "Tue"},
+                                {value: this.state.day3, label: "Wed"},
+                                {value: this.state.day4, label: "Thu"},
+                                {value: this.state.day5, label: "Fri"},
+                                {value: this.state.day6, label: "Sat"}],
                             label: 'Legend',
                             config: {
-                            colors: [processColor('#C0FF8C'), processColor('#FFF78C'), processColor('#FFD08C')],
+                            colors: [processColor('#C0FF8C'), processColor('#FFF78C'), processColor('#FFD08C'),processColor('#D23B3B'),processColor('#70072C'),processColor('#749E0A'),processColor('#059B65')],
                             valueTextSize: 20,
                             valueTextColor: processColor('green'),
                             sliceSpace: 5,

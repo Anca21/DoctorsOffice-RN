@@ -11,6 +11,7 @@ import {
     TouchableOpacity,
     processColor,
     Alert,
+    Linking,
 
 } from 'react-native';
 import {StackNavigator, SafeAreaView} from 'react-navigation';
@@ -75,6 +76,15 @@ export class Details extends Component{
          });
     }
 
+    sendEMail(patient){
+//    receiver = "test@gmail.com";
+      receiver = patient.email
+        subject = "Update on personal details";
+        body = "Hello,\n " + patient.name + ", your personal details have changed! \n"+
+         "Please check de Doctors Office Mobile App for further information. \n Regards,\n DocTech Team";
+        all = "mailto:" + receiver + "?subject=" + subject + "&body=" + body;
+        Linking.openURL(all)
+    }
     render() {
         const {navigate} = this.props.navigation;
         const {params} = this.props.navigation.state;
@@ -116,7 +126,9 @@ export class Details extends Component{
                                 this.updatePatientEmail(key, this.state.newEmail);
                         }
                         params.refresh();
+                        this.sendEMail(patient);
                         goBack();
+
                     }
                 }>
                         <Text style={styles.reserveButtonText}>Save changes </Text>
@@ -126,7 +138,7 @@ export class Details extends Component{
                        var username = (snapshot.val());
                        console.log("uuu", username.email);
                        if (username.email === "admin@admin.com") {
-                            navigate('Chart',{name:patient.name})
+                            navigate('Chart',{name:patient.next_consult})
                        }
                        if (username.email != "admin@admin.com") {
                            console.log(username);
